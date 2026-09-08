@@ -2,271 +2,270 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Order Tracker · ระบบติดตามพัสดุ</title>
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&family=Noto+Sans+Myanmar:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&family=Noto+Sans+Myanmar:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
   :root{
-    --paper:#F6F2EA;
-    --paper-raised:#FFFDF9;
-    --ink:#20293B;
-    --ink-soft:#5B6478;
-    --line:#DCD4C4;
-    --stamp:#B23A2E;
-    --stamp-ink:#7C271E;
+    --ink:#1C2233;
+    --ink-soft:#6B7280;
+    --ink-faint:#9AA1B0;
+    --glass:rgba(255,255,255,0.58);
+    --glass-strong:rgba(255,255,255,0.82);
+    --glass-border:rgba(255,255,255,0.75);
+    --line:rgba(28,34,51,0.08);
 
-    --amber:#B0781E;
-    --amber-bg:#F6E9D2;
-    --blue:#2C6690;
-    --blue-bg:#DDEAF3;
-    --teal:#2E7A6E;
-    --teal-bg:#DBEFEA;
-    --green:#3C7A46;
-    --green-bg:#DEEEDD;
-    --red:#B23A2E;
-    --red-bg:#F5DEDA;
-    --gray:#726C5E;
-    --gray-bg:#E7E2D6;
+    --amber:#9A6A16; --amber-a:#F4E3C4; --amber-b:#FBF3E4;
+    --blue:#2A5F86;  --blue-a:#D3E6F5;  --blue-b:#EDF5FC;
+    --teal:#227368;  --teal-a:#CDEFE7;  --teal-b:#E9F9F5;
+    --green:#2E7A46; --green-a:#D3EFDA; --green-b:#EDF9EF;
+    --red:#A63B33;   --red-a:#F5D9D5;   --red-b:#FBECEA;
+    --gray:#5B5F6B;  --gray-a:#E4E4EA;  --gray-b:#F2F2F5;
   }
 
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
   body{
-    background:var(--paper);
-    color:var(--ink);
+    min-height:100vh;
     font-family:'Inter',-apple-system,sans-serif;
+    color:var(--ink);
     font-size:15px;
     line-height:1.5;
     -webkit-font-smoothing:antialiased;
+    background:
+      radial-gradient(at 15% 8%,  #CFEFE0 0, transparent 48%),
+      radial-gradient(at 82% 4%,  #D7E6F8 0, transparent 46%),
+      radial-gradient(at 92% 62%, #E6DCF6 0, transparent 50%),
+      radial-gradient(at 8% 78%,  #FCEBD8 0, transparent 46%),
+      radial-gradient(at 55% 95%, #D6F0EA 0, transparent 55%),
+      linear-gradient(160deg, #EAF6F0 0%, #E7EEF9 55%, #F1E9F6 100%);
+    background-attachment:fixed;
   }
   [lang-block="my"]{ font-family:'Noto Sans Myanmar','Inter',sans-serif; }
 
-  .wrap{ max-width:960px; margin:0 auto; padding:28px 20px 60px; }
+  .page{ max-width:1040px; margin:0 auto; padding:18px 14px 48px; }
 
-  /* ---- Header ---- */
-  header.top{
-    display:flex; align-items:flex-start; justify-content:space-between;
-    gap:16px; flex-wrap:wrap; margin-bottom:22px;
+  .glass{
+    background:var(--glass);
+    backdrop-filter:blur(22px) saturate(140%);
+    -webkit-backdrop-filter:blur(22px) saturate(140%);
+    border:1px solid var(--glass-border);
+    border-radius:26px;
+    box-shadow:0 24px 60px -20px rgba(30,40,60,0.20);
   }
-  .brand{ display:flex; align-items:center; gap:14px; }
-  .stamp-mark{
-    width:46px; height:46px; border-radius:50%;
-    border:2px solid var(--stamp);
+
+  /* ---- Top bar ---- */
+  .panel{ padding:16px 16px 20px; margin-bottom:14px; }
+
+  .topbar{
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    flex-wrap:wrap; margin-bottom:16px;
+  }
+  .brand{ display:flex; align-items:center; gap:10px; min-width:0; }
+  .brand .mark{
+    width:36px; height:36px; border-radius:11px; flex:none;
+    background:linear-gradient(155deg,#7FD9B8,#8FB6EE 60%,#C6A6EA);
     display:flex; align-items:center; justify-content:center;
-    color:var(--stamp); font-family:'Fraunces',serif; font-weight:600; font-size:19px;
-    flex:none;
-    transform:rotate(-6deg);
+    color:#fff; font-weight:800; font-size:14px;
+    box-shadow:0 6px 14px -6px rgba(60,120,150,0.55);
   }
-  h1{
-    font-family:'Fraunces',serif; font-weight:600; font-size:26px;
-    margin:0 0 2px; letter-spacing:-0.01em;
+  .brand h1{
+    font-size:15.5px; font-weight:700; margin:0; letter-spacing:-0.01em;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
   }
-  .tagline{ color:var(--ink-soft); font-size:13.5px; margin:0; }
+  .brand .tagline{ font-size:11.5px; color:var(--ink-soft); margin:1px 0 0; }
 
-  .lang-switch{ display:flex; gap:6px; align-self:flex-start; }
-  .lang-switch button{
-    font-family:'Inter',sans-serif; font-size:12.5px; font-weight:600;
-    border:1px solid var(--line); background:var(--paper-raised); color:var(--ink-soft);
-    padding:7px 12px; border-radius:20px; cursor:pointer;
+  .lang-pills{ display:flex; gap:5px; flex:none; }
+  .lang-pills button{
+    font-family:inherit; font-size:12px; font-weight:700;
+    border:1px solid var(--line); background:var(--glass-strong); color:var(--ink-soft);
+    padding:7px 12px; border-radius:999px; cursor:pointer;
     transition:all .15s ease;
   }
-  .lang-switch button.active{
-    background:var(--ink); color:var(--paper-raised); border-color:var(--ink);
-  }
-  .lang-switch button:hover:not(.active){ border-color:var(--ink-soft); }
+  .lang-pills button.active{ background:var(--ink); color:#fff; border-color:var(--ink); }
 
-  /* ---- Day tabs ---- */
-  .day-tabs{
-    display:flex; gap:8px; overflow-x:auto; padding-bottom:6px; margin-bottom:18px;
-    border-bottom:1px solid var(--line);
+  /* ---- day chip row ---- */
+  .chip-row{
+    display:flex; gap:7px; overflow-x:auto; padding:2px 2px 6px; margin:0 -2px 12px;
+    scrollbar-width:none;
   }
-  .day-tabs button{
-    flex:none; font-family:'JetBrains Mono',monospace; font-size:13px; font-weight:600;
-    background:none; border:none; color:var(--ink-soft);
-    padding:9px 4px 12px; cursor:pointer; position:relative; white-space:nowrap;
+  .chip-row::-webkit-scrollbar{ display:none; }
+  .chip-row button{
+    flex:none; font-family:inherit; font-size:12.5px; font-weight:600;
+    padding:9px 14px; border-radius:999px; border:1px solid var(--line);
+    background:var(--glass-strong); color:var(--ink-soft); cursor:pointer;
+    white-space:nowrap; display:flex; align-items:center; gap:6px;
   }
-  .day-tabs button .n{
-    font-family:'Inter',sans-serif; font-weight:500; font-size:10.5px;
-    color:var(--ink-soft); margin-left:5px;
+  .chip-row button .n{
+    font-size:10.5px; font-weight:700; background:rgba(28,34,51,0.08);
+    padding:1px 6px; border-radius:999px; color:var(--ink-soft);
   }
-  .day-tabs button.active{ color:var(--stamp); }
-  .day-tabs button.active::after{
-    content:""; position:absolute; left:0; right:0; bottom:-7px; height:2px; background:var(--stamp);
-  }
+  .chip-row button.active{ background:var(--ink); color:#fff; border-color:var(--ink); }
+  .chip-row button.active .n{ background:rgba(255,255,255,0.22); color:#fff; }
 
-  /* ---- Stats strip ---- */
-  .stats{
-    display:flex; gap:10px; flex-wrap:wrap; margin-bottom:18px;
-  }
+  /* ---- stats ---- */
+  .stats{ display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:14px; }
   .stat{
-    background:var(--paper-raised); border:1px solid var(--line); border-radius:8px;
-    padding:10px 14px; min-width:88px;
+    background:var(--glass-strong); border:1px solid var(--line); border-radius:16px;
+    padding:10px 6px; text-align:center;
   }
-  .stat b{ display:block; font-family:'Fraunces',serif; font-size:20px; font-weight:600; }
-  .stat span{ font-size:11.5px; color:var(--ink-soft); }
+  .stat b{ display:block; font-size:19px; font-weight:800; letter-spacing:-0.02em; }
+  .stat span{ font-size:10px; color:var(--ink-soft); font-weight:600; }
 
-  /* ---- Controls ---- */
-  .controls{
-    display:flex; gap:10px; flex-wrap:wrap; margin-bottom:18px; align-items:center;
+  /* ---- controls ---- */
+  .controls{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
+  .seg{ display:flex; gap:5px; background:rgba(28,34,51,0.06); padding:4px; border-radius:999px; }
+  .seg button{
+    font-family:inherit; font-size:12.5px; font-weight:700; padding:7px 13px;
+    border:none; border-radius:999px; background:transparent; color:var(--ink-soft); cursor:pointer;
   }
-  .carrier-filter{ display:flex; gap:6px; }
-  .carrier-filter button{
-    font-size:13px; font-weight:600; padding:8px 14px; border-radius:7px;
-    border:1px solid var(--line); background:var(--paper-raised); color:var(--ink); cursor:pointer;
-  }
-  .carrier-filter button.active{ background:var(--ink); color:var(--paper-raised); border-color:var(--ink); }
+  .seg button.active{ background:#fff; color:var(--ink); box-shadow:0 2px 8px rgba(0,0,0,0.08); }
 
   select#status-filter{
-    font-family:'Inter',sans-serif; font-size:13px; font-weight:500;
-    padding:8px 10px; border-radius:7px; border:1px solid var(--line);
-    background:var(--paper-raised); color:var(--ink); cursor:pointer;
+    font-family:inherit; font-size:12.5px; font-weight:600;
+    padding:9px 12px; border-radius:999px; border:1px solid var(--line);
+    background:var(--glass-strong); color:var(--ink); cursor:pointer;
   }
 
-  .search-box{ flex:1; min-width:200px; position:relative; }
-  .search-box input{
-    width:100%; font-family:'Inter',sans-serif; font-size:13.5px;
-    padding:9px 12px; border-radius:7px; border:1px solid var(--line);
-    background:var(--paper-raised); color:var(--ink);
+  .search-wrap{ flex:1; min-width:160px; position:relative; }
+  .search-wrap svg{ position:absolute; left:12px; top:50%; transform:translateY(-50%); opacity:.45; }
+  .search-wrap input{
+    width:100%; font-family:inherit; font-size:13px;
+    padding:9px 12px 9px 34px; border-radius:999px; border:1px solid var(--line);
+    background:var(--glass-strong); color:var(--ink);
   }
-  .search-box input:focus{ outline:2px solid var(--stamp); outline-offset:-1px; }
+  .search-wrap input:focus{ outline:2px solid rgba(42,95,134,0.4); outline-offset:0; }
 
   .privacy-toggle{
-    display:flex; align-items:center; gap:7px; font-size:12.5px; color:var(--ink-soft);
-    cursor:pointer; user-select:none; margin-left:auto;
+    display:flex; align-items:center; gap:6px; font-size:11.5px; font-weight:600;
+    color:var(--ink-soft); cursor:pointer; user-select:none;
+    background:var(--glass-strong); border:1px solid var(--line);
+    padding:7px 12px; border-radius:999px;
   }
-  .privacy-toggle input{ accent-color:var(--stamp); }
+  .privacy-toggle input{ accent-color:var(--ink); }
 
-  /* ---- Order cards ---- */
-  .orders{ display:flex; flex-direction:column; gap:10px; }
-  .order{
-    background:var(--paper-raised);
-    border:1px solid var(--line);
-    border-radius:10px;
-    padding:14px 16px;
-    display:grid;
-    grid-template-columns:auto 1fr auto;
-    gap:4px 16px;
-    align-items:center;
-    position:relative;
-  }
-  .order::before{
-    content:""; position:absolute; left:0; top:10px; bottom:10px; width:3px;
-    border-radius:3px; background:var(--o-color, var(--gray));
-  }
-  .order{ padding-left:20px; }
+  /* ---- order card grid ---- */
+  .orders{ display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
+  @media(max-width:640px){ .orders{ grid-template-columns:1fr; } }
 
-  .o-id{
-    font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--ink-soft);
-    grid-column:1; grid-row:1;
+  .order-card{
+    position:relative; border-radius:20px; padding:14px 14px 12px;
+    border:1px solid var(--glass-border);
+    background:
+      linear-gradient(165deg, var(--t-a) 0%, var(--t-b) 100%);
+    box-shadow:0 10px 24px -14px rgba(30,40,60,0.22);
   }
-  .o-carrier{
-    font-size:10.5px; font-weight:700; letter-spacing:.03em;
-    padding:3px 8px; border-radius:5px; grid-column:1; grid-row:2;
-    justify-self:start; white-space:nowrap;
+  .card-head{ display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:10px; }
+  .icon-tiles{ display:flex; gap:6px; }
+  .icon-tile{
+    width:32px; height:32px; border-radius:10px; background:rgba(255,255,255,0.85);
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 3px 8px -3px rgba(20,30,45,0.25);
+    color:var(--t-fg);
   }
-  .o-carrier.jt{ background:#F6DAD8; color:#9A2A22; }
-  .o-carrier.flash{ background:#E7DDF6; color:#5B3AA0; }
-  .o-carrier.other{ background:var(--gray-bg); color:var(--gray); }
+  .order-id{
+    font-family:'JetBrains Mono',monospace; font-size:10.5px; font-weight:600;
+    color:var(--ink-faint); background:rgba(255,255,255,0.6); padding:4px 8px;
+    border-radius:8px; align-self:flex-start;
+  }
 
-  .o-main{ grid-column:2; grid-row:1 / span 2; min-width:0; }
-  .o-name{ font-weight:600; font-size:15px; margin:0 0 2px; }
-  .o-sub{ font-size:12.5px; color:var(--ink-soft); display:flex; flex-wrap:wrap; gap:x 10px; gap:4px 12px; }
-  .o-sub span{ white-space:nowrap; }
-  .o-track{ font-family:'JetBrains Mono',monospace; }
-  .o-addr{ font-size:12px; color:var(--ink-soft); margin-top:4px; }
+  .card-name{ font-size:15.5px; font-weight:700; margin:0 0 4px; letter-spacing:-0.01em; }
+  .card-meta{ font-size:11.5px; color:var(--ink-soft); display:flex; flex-direction:column; gap:2px; margin-bottom:10px; }
+  .card-meta .track{ font-family:'JetBrains Mono',monospace; font-size:11px; }
+  .card-meta .addr{ line-height:1.4; }
 
-  .o-status{
-    grid-column:3; grid-row:1 / span 2; text-align:right; min-width:130px;
+  .card-foot{ display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap; }
+  .mini-tag{
+    font-size:10.5px; font-weight:700; padding:4px 9px; border-radius:999px;
+    background:rgba(255,255,255,0.75); color:var(--ink-soft);
   }
   .status-pill{
-    display:inline-block; font-size:12.5px; font-weight:600; padding:5px 11px;
-    border-radius:20px; white-space:nowrap;
+    font-size:11px; font-weight:700; padding:5px 11px; border-radius:999px;
+    background:rgba(255,255,255,0.85); color:var(--t-fg);
+    display:flex; align-items:center; gap:5px;
   }
-  .o-amount{ font-size:12px; color:var(--ink-soft); margin-top:6px; }
-  .o-amount b{ color:var(--ink); font-weight:600; }
-
-  @media(max-width:600px){
-    .order{ grid-template-columns:1fr auto; }
-    .o-carrier{ grid-row:1; grid-column:1; }
-    .o-id{ grid-row:1; grid-column:2; justify-self:end; }
-    .o-main{ grid-column:1 / -1; grid-row:2; margin-top:6px; }
-    .o-status{ grid-column:1 / -1; grid-row:3; text-align:left; margin-top:8px; }
-  }
+  .status-pill .dot{ width:6px; height:6px; border-radius:50%; background:var(--t-fg); flex:none; }
+  .amount{ font-size:11.5px; font-weight:700; color:var(--ink); }
 
   .empty{
-    text-align:center; padding:50px 20px; color:var(--ink-soft); font-size:14px;
+    text-align:center; padding:60px 20px; color:var(--ink-soft); font-size:13.5px;
+    background:var(--glass-strong); border-radius:20px; border:1px solid var(--line);
   }
 
-  .admin-panel{
-    margin:26px 0 0; border:1px dashed var(--line); border-radius:8px;
-    padding:10px 14px; background:transparent;
-  }
+  /* ---- admin panel ---- */
+  .admin-panel{ margin-top:14px; padding:4px; }
   .admin-panel summary{
-    cursor:pointer; font-size:12.5px; font-weight:600; color:var(--ink-soft);
-    list-style:revert;
+    cursor:pointer; font-size:12px; font-weight:700; color:var(--ink-soft);
+    padding:10px 14px; list-style:none; display:flex; align-items:center; gap:6px;
   }
-  .admin-panel summary:hover{ color:var(--ink); }
-  .admin-body{
-    margin-top:12px; display:flex; flex-direction:column; gap:10px; max-width:480px;
-  }
-  .admin-body p{ margin:0; font-size:12px; color:var(--ink-soft); line-height:1.5; }
-  .admin-body input[type=file]{ font-size:12.5px; color:var(--ink-soft); }
+  .admin-panel summary::-webkit-details-marker{ display:none; }
+  .admin-panel summary::before{ content:"⚙"; font-size:13px; }
+  .admin-body{ padding:0 14px 14px; display:flex; flex-direction:column; gap:10px; }
+  .admin-body p{ margin:0; font-size:11.5px; color:var(--ink-soft); line-height:1.5; }
+  .admin-body input[type=file]{ font-size:12px; color:var(--ink-soft); }
   .admin-body button{
-    align-self:flex-start; font-size:12.5px; font-weight:600; padding:9px 15px;
-    border-radius:7px; border:1px solid var(--ink); background:var(--ink);
-    color:var(--paper-raised); cursor:pointer;
+    align-self:flex-start; font-size:12.5px; font-weight:700; padding:10px 16px;
+    border-radius:999px; border:none; background:var(--ink); color:#fff; cursor:pointer;
   }
   .admin-body button:disabled{ opacity:.35; cursor:not-allowed; }
-  #upload-status{ font-size:12px; min-height:14px; }
+  #upload-status{ font-size:11.5px; font-weight:600; min-height:14px; }
 
   footer{
-    margin-top:30px; padding-top:16px; border-top:1px solid var(--line);
-    font-size:11.5px; color:var(--ink-soft); text-align:center;
+    margin-top:16px; padding:14px 16px; text-align:center;
+    font-size:10.5px; color:var(--ink-soft); line-height:1.5;
+  }
+
+  @media(max-width:420px){
+    .stats{ grid-template-columns:repeat(2,1fr); }
+    .brand h1{ font-size:14px; }
   }
 </style>
 </head>
 <body>
 
-<div class="wrap">
+<div class="page">
 
-  <header class="top">
-    <div class="brand">
-      <div class="stamp-mark">TR</div>
-      <div>
-        <h1 data-i18n="title">รายการสั่งซื้อและติดตามพัสดุ</h1>
-        <p class="tagline" data-i18n="subtitle">ตรวจสอบสถานะพัสดุของคุณได้ที่นี่</p>
+  <div class="glass panel">
+    <div class="topbar">
+      <div class="brand">
+        <div class="mark">TR</div>
+        <div style="min-width:0">
+          <h1 data-i18n="title">รายการสั่งซื้อและติดตามพัสดุ</h1>
+          <p class="tagline" data-i18n="subtitle">ตรวจสอบสถานะพัสดุของคุณได้ที่นี่</p>
+        </div>
+      </div>
+      <div class="lang-pills" id="lang-switch">
+        <button data-lang="th" class="active">ไทย</button>
+        <button data-lang="en">EN</button>
+        <button data-lang="my">မြန်မာ</button>
       </div>
     </div>
-    <div class="lang-switch" id="lang-switch">
-      <button data-lang="th" class="active">ไทย</button>
-      <button data-lang="en">EN</button>
-      <button data-lang="my">မြန်မာ</button>
+
+    <div class="chip-row" id="day-tabs"></div>
+
+    <div class="stats" id="stats"></div>
+
+    <div class="controls">
+      <div class="seg" id="carrier-filter"></div>
+      <select id="status-filter"></select>
+      <div class="search-wrap">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="search" data-i18n-ph="search_ph">
+      </div>
+      <label class="privacy-toggle">
+        <input type="checkbox" id="privacy-toggle">
+        <span data-i18n="show_full">แสดงข้อมูลเต็ม</span>
+      </label>
     </div>
-  </header>
 
-  <div class="day-tabs" id="day-tabs"></div>
-
-  <div class="stats" id="stats"></div>
-
-  <div class="controls">
-    <div class="carrier-filter" id="carrier-filter"></div>
-    <select id="status-filter"></select>
-    <div class="search-box">
-      <input type="text" id="search" data-i18n-ph="search_ph">
-    </div>
-    <label class="privacy-toggle">
-      <input type="checkbox" id="privacy-toggle">
-      <span data-i18n="show_full">แสดงข้อมูลลูกค้าแบบเต็ม</span>
-    </label>
+    <div class="orders" id="orders"></div>
+    <div class="empty" id="empty" style="display:none" data-i18n="no_results">ไม่พบรายการที่ค้นหา</div>
   </div>
 
-  <div class="orders" id="orders"></div>
-  <div class="empty" id="empty" style="display:none" data-i18n="no_results">ไม่พบรายการที่ค้นหา</div>
-
-  <details class="admin-panel">
+  <details class="admin-panel glass">
     <summary data-i18n="admin_title">สำหรับแอดมิน: อัปเดตข้อมูลจากไฟล์ Excel</summary>
     <div class="admin-body">
       <p data-i18n="admin_desc">อัปโหลดไฟล์ Excel รูปแบบเดียวกับไฟล์ต้นฉบับ (แต่ละชีตคือแต่ละวัน) ระบบจะอ่านข้อมูลและอัปเดตหน้านี้ทันที กดปุ่มด้านล่างเพื่อดาวน์โหลดไฟล์เว็บที่อัปเดตแล้ว แล้วอัปโหลดทับไฟล์ index.html เดิมใน GitHub เพื่อให้ทุกคนเห็นข้อมูลใหม่</p>
@@ -276,9 +275,7 @@
     </div>
   </details>
 
-  <footer>
-    <span data-i18n="privacy_note">หมายเลขโทรศัพท์และที่อยู่บางส่วนถูกซ่อนไว้เพื่อความเป็นส่วนตัว — กดปุ่ม "แสดงข้อมูลลูกค้าแบบเต็ม" เพื่อดูข้อมูลทั้งหมด</span>
-  </footer>
+  <footer data-i18n="privacy_note">หมายเลขโทรศัพท์และที่อยู่บางส่วนถูกซ่อนไว้เพื่อความเป็นส่วนตัว — กดปุ่ม "แสดงข้อมูลเต็ม" เพื่อดูข้อมูลทั้งหมด</footer>
 
 </div>
 
@@ -294,83 +291,104 @@ const UI = {
   th: {
     title:"รายการสั่งซื้อและติดตามพัสดุ",
     subtitle:"ตรวจสอบสถานะพัสดุของคุณได้ที่นี่",
-    search_ph:"ค้นหาชื่อ, เบอร์โทร หรือเลข Tracking",
-    show_full:"แสดงข้อมูลลูกค้าแบบเต็ม",
+    search_ph:"ค้นหาชื่อ, เบอร์, Tracking",
+    show_full:"แสดงข้อมูลเต็ม",
     no_results:"ไม่พบรายการที่ค้นหา",
-    privacy_note:'หมายเลขโทรศัพท์และที่อยู่บางส่วนถูกซ่อนไว้เพื่อความเป็นส่วนตัว — กดปุ่ม "แสดงข้อมูลลูกค้าแบบเต็ม" เพื่อดูข้อมูลทั้งหมด',
+    privacy_note:'หมายเลขโทรศัพท์และที่อยู่บางส่วนถูกซ่อนไว้เพื่อความเป็นส่วนตัว — กดปุ่ม "แสดงข้อมูลเต็ม" เพื่อดูข้อมูลทั้งหมด',
     all:"ทั้งหมด",
     status_all:"ทุกสถานะ",
     orders_count:"ออเดอร์",
+    delivered_word:"สำเร็จ",
     tracking:"Tracking",
     cod:"เก็บปลายทาง",
     paid:"ชำระแล้ว",
-    day_word:"วันที่",
     admin_title:"สำหรับแอดมิน: อัปเดตข้อมูลจากไฟล์ Excel",
     admin_desc:'อัปโหลดไฟล์ Excel รูปแบบเดียวกับไฟล์ต้นฉบับ (แต่ละชีตคือแต่ละวัน) ระบบจะอ่านข้อมูลและอัปเดตหน้านี้ทันที กดปุ่มด้านล่างเพื่อดาวน์โหลดไฟล์เว็บที่อัปเดตแล้ว แล้วอัปโหลดทับไฟล์ index.html เดิมใน GitHub เพื่อให้ทุกคนเห็นข้อมูลใหม่',
     download_btn:"ดาวน์โหลดเว็บที่อัปเดตแล้ว (index.html)",
     reading_file:"กำลังอ่านไฟล์...",
-    upload_error:"ไม่สามารถอ่านไฟล์นี้ได้ ตรวจสอบว่าเป็นไฟล์ Excel รูปแบบเดียวกับไฟล์ต้นฉบับ (แต่ละชีตคือแต่ละวัน มีคอลัมน์ชื่อลูกค้า, เบอร์โทร, สถานะ ฯลฯ)"
+    upload_error:"ไม่สามารถอ่านไฟล์นี้ได้ ตรวจสอบว่าเป็นไฟล์ Excel รูปแบบเดียวกับไฟล์ต้นฉบับ"
   },
   en: {
     title:"Order & Delivery Tracker",
     subtitle:"Check your parcel's delivery status here",
-    search_ph:"Search name, phone, or tracking no.",
-    show_full:"Show full customer details",
+    search_ph:"Search name, phone, tracking",
+    show_full:"Show full details",
     no_results:"No matching orders found",
-    privacy_note:'Phone numbers and addresses are partially hidden for privacy — tap "Show full customer details" to reveal them',
+    privacy_note:'Phone numbers and addresses are partially hidden for privacy — tap "Show full details" to reveal them',
     all:"All",
     status_all:"All statuses",
     orders_count:"orders",
+    delivered_word:"Delivered",
     tracking:"Tracking",
     cod:"Cash on delivery",
     paid:"Paid",
-    day_word:"Date",
     admin_title:"Admin: update data from Excel",
     admin_desc:"Upload an Excel file in the same format as the original (one sheet per day). The page updates instantly. Then click below to download the updated site file and upload it over the existing index.html on GitHub so everyone sees the new data.",
     download_btn:"Download updated site (index.html)",
     reading_file:"Reading file...",
-    upload_error:"Couldn't read this file. Make sure it's an Excel file in the original format (one sheet per day, with customer name, phone, status, etc. columns)."
+    upload_error:"Couldn't read this file. Make sure it's an Excel file in the original format."
   },
   my: {
     title:"မှာယူမှုနှင့် ပို့ဆောင်မှု အခြေအနေ",
     subtitle:"သင့်ပါဆယ်၏ ပို့ဆောင်မှုအခြေအနေကို ဤနေရာတွင် စစ်ဆေးနိုင်ပါသည်",
-    search_ph:"အမည်၊ ဖုန်းနံပါတ် သို့မဟုတ် Tracking နံပါတ်ဖြင့် ရှာပါ",
-    show_full:"ဖောက်သည်အချက်အလက် အပြည့်အစုံ ပြရန်",
+    search_ph:"အမည်၊ ဖုန်း၊ Tracking ဖြင့်ရှာပါ",
+    show_full:"အပြည့်အစုံပြရန်",
     no_results:"ရှာဖွေမှုနှင့် ကိုက်ညီသော အော်ဒါ မတွေ့ပါ",
-    privacy_note:'ကိုယ်ရေးကိုယ်တာလုံခြုံရေးအတွက် ဖုန်းနံပါတ်နှင့် လိပ်စာအချို့ကို ဖျောက်ထားပါသည် — အပြည့်အစုံကြည့်ရန် "ဖောက်သည်အချက်အလက် အပြည့်အစုံ ပြရန်" ကို နှိပ်ပါ',
+    privacy_note:'ကိုယ်ရေးကိုယ်တာလုံခြုံရေးအတွက် ဖုန်းနံပါတ်နှင့် လိပ်စာအချို့ကို ဖျောက်ထားပါသည် — အပြည့်အစုံကြည့်ရန် "အပြည့်အစုံပြရန်" ကို နှိပ်ပါ',
     all:"အားလုံး",
     status_all:"အခြေအနေအားလုံး",
     orders_count:"အော်ဒါများ",
+    delivered_word:"ပို့ဆောင်ပြီး",
     tracking:"Tracking",
     cod:"ပစ္စည်းရောက်မှ ငွေချေရန်",
     paid:"ငွေပေးချေပြီး",
-    day_word:"နေ့ရက်",
     admin_title:"အက်ဒမင်: Excel မှ ဒေတာအသစ် အပ်ဒိတ်လုပ်ရန်",
-    admin_desc:"မူရင်းဖိုင်ပုံစံတူ Excel ဖိုင်ကို တင်ပါ (တစ်နေ့လျှင် Sheet တစ်ခု)။ စာမျက်နှာသည် ချက်ချင်း အပ်ဒိတ်ဖြစ်သွားမည်။ ထို့နောက် အောက်ပါခလုတ်ကိုနှိပ်ပြီး အပ်ဒိတ်ထားသော ဝဘ်ဆိုက်ဖိုင်ကို ဒေါင်းလုတ်ဆွဲကာ GitHub ပေါ်ရှိ index.html အဟောင်းကို အစားထိုးတင်ပါ",
+    admin_desc:"မူရင်းဖိုင်ပုံစံတူ Excel ဖိုင်ကို တင်ပါ (တစ်နေ့လျှင် Sheet တစ်ခု)။ စာမျက်နှာသည် ချက်ချင်း အပ်ဒိတ်ဖြစ်သွားမည်။ ထို့နောက် အောက်ပါခလုတ်ကိုနှိပ်ပြီး GitHub ပေါ်ရှိ index.html အဟောင်းကို အစားထိုးတင်ပါ",
     download_btn:"အပ်ဒိတ်ထားသော ဝဘ်ဆိုက် ဒေါင်းလုတ်ဆွဲရန် (index.html)",
     reading_file:"ဖိုင်ဖတ်နေသည်...",
-    upload_error:"ဤဖိုင်ကို မဖတ်နိုင်ပါ။ မူရင်းပုံစံတူ Excel ဖိုင်ဟုတ်မဟုတ် စစ်ဆေးပါ (တစ်နေ့လျှင် Sheet တစ်ခု၊ ဖောက်သည်အမည်၊ ဖုန်းနံပါတ်၊ အခြေအနေ စသည့် ကော်လံများပါရှိရမည်)"
+    upload_error:"ဤဖိုင်ကို မဖတ်နိုင်ပါ။ မူရင်းပုံစံတူ Excel ဖိုင်ဟုတ်မဟုတ် စစ်ဆေးပါ"
   }
 };
 
+/* status -> {en,my,color,icon} */
 const STATUS_I18N = {
-  "รอดำเนินการ":      { en:"Pending",             my:"လုပ်ဆောင်ရန် စောင့်ဆိုင်းနေသည်",         color:"amber" },
-  "รอเช็คสถานะ":       { en:"Checking Status",     my:"အခြေအနေ စစ်ဆေးနေသည်",                     color:"amber" },
-  "กำลังจัดส่ง":        { en:"In Transit",          my:"ပို့ဆောင်နေသည်",                          color:"blue" },
-  "พัสดุคงคลัง":        { en:"In Warehouse",        my:"ပစ္စည်းသိုလှောင်ရုံ ရောက်ရှိနေသည်",       color:"teal" },
-  "จัดส่งสำเร็จ":       { en:"Delivered",           my:"ပို့ဆောင်ပြီးပါပြီ",                      color:"green" },
-  "มีปัญหา/ตีกลับ":     { en:"Problem / Returned",  my:"ပြဿနာရှိ / ပြန်ပို့ခံရသည်",              color:"red" },
-  "ยกเลิก":            { en:"Cancelled",           my:"ပယ်ဖျက်ထားသည်",                          color:"gray" }
+  "รอดำเนินการ":      { en:"Pending",             my:"လုပ်ဆောင်ရန် စောင့်ဆိုင်းနေသည်",   color:"amber", icon:"clock" },
+  "รอเช็คสถานะ":       { en:"Checking Status",     my:"အခြေအနေ စစ်ဆေးနေသည်",              color:"amber", icon:"search" },
+  "กำลังจัดส่ง":        { en:"In Transit",          my:"ပို့ဆောင်နေသည်",                    color:"blue",  icon:"truck" },
+  "พัสดุคงคลัง":        { en:"In Warehouse",        my:"ပစ္စည်းသိုလှောင်ရုံ ရောက်ရှိနေသည်",  color:"teal",  icon:"box" },
+  "จัดส่งสำเร็จ":       { en:"Delivered",           my:"ပို့ဆောင်ပြီးပါပြီ",                color:"green", icon:"check" },
+  "มีปัญหา/ตีกลับ":     { en:"Problem / Returned",  my:"ပြဿနာရှိ / ပြန်ပို့ခံရသည်",        color:"red",   icon:"alert" },
+  "ยกเลิก":            { en:"Cancelled",           my:"ပယ်ဖျက်ထားသည်",                    color:"gray",  icon:"x" }
 };
 const STATUS_ORDER = ["รอดำเนินการ","รอเช็คสถานะ","กำลังจัดส่ง","พัสดุคงคลัง","จัดส่งสำเร็จ","มีปัญหา/ตีกลับ","ยกเลิก"];
 
 const ORDERTYPE_I18N = {
-  "COD":   { th:"เก็บเงินปลายทาง (COD)", en:"Cash on Delivery (COD)", my:"ပစ္စည်းရောက်မှ ငွေချေရန် (COD)" },
-  "PAID":  { th:"ชำระแล้ว",              en:"Paid",                    my:"ငွေပေးချေပြီး" },
-  "CREDIT":{ th:"เครดิต",                en:"Credit",                  my:"ခရက်ဒစ်" },
-  "Gift":  { th:"ของขวัญ",               en:"Gift",                    my:"လက်ဆောင်" },
-  "RS":    { th:"ส่งอีกรอบ",             en:"Resend",                  my:"ပြန်လည်ပို့ဆောင်ခြင်း" },
-  "อื่นๆ": { th:"อื่นๆ",                 en:"Other",                   my:"အခြား" }
+  "COD":   { th:"เก็บเงินปลายทาง", en:"COD",     my:"COD" },
+  "PAID":  { th:"ชำระแล้ว",        en:"Paid",    my:"ငွေပေးချေပြီး" },
+  "CREDIT":{ th:"เครดิต",          en:"Credit",  my:"ခရက်ဒစ်" },
+  "Gift":  { th:"ของขวัญ",         en:"Gift",    my:"လက်ဆောင်" },
+  "RS":    { th:"ส่งอีกรอบ",       en:"Resend",  my:"ပြန်ပို့ဆောင်" },
+  "อื่นๆ": { th:"อื่นๆ",           en:"Other",   my:"အခြား" }
+};
+
+const ICONS = {
+  clock:  '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>',
+  search: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>',
+  truck:  '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="6" width="14" height="11"/><path d="M15 10h4l3 3v4h-7z"/><circle cx="6" cy="19" r="1.6"/><circle cx="17.5" cy="19" r="1.6"/></svg>',
+  box:    '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg>',
+  check:  '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>',
+  alert:  '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l10 18H2z"/><path d="M12 10v4"/><circle cx="12" cy="17.3" r="0.4" fill="currentColor"/></svg>',
+  x:      '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>',
+  package:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/><path d="M3 8l9 5 9-5"/></svg>'
+};
+
+const COLOR_VARS = {
+  amber:['var(--amber)','var(--amber-a)','var(--amber-b)'],
+  blue: ['var(--blue)', 'var(--blue-a)', 'var(--blue-b)'],
+  teal: ['var(--teal)', 'var(--teal-a)', 'var(--teal-b)'],
+  green:['var(--green)','var(--green-a)','var(--green-b)'],
+  red:  ['var(--red)',  'var(--red-a)',  'var(--red-b)'],
+  gray: ['var(--gray)', 'var(--gray-a)', 'var(--gray-b)']
 };
 
 let lang = "th";
@@ -386,7 +404,6 @@ let showFull = false;
 
 /* ---------- helpers ---------- */
 function fmtDate(sheetName){
-  // sheetName like "7-09-26" -> D-MM-YY
   const parts = sheetName.split('-');
   if(parts.length !== 3) return sheetName;
   const [d, m, y] = parts;
@@ -394,36 +411,34 @@ function fmtDate(sheetName){
   const mi = parseInt(m,10)-1;
   const yyyy = 2000 + parseInt(y,10);
   if(mi < 0 || mi > 11) return sheetName;
-  return `${parseInt(d,10)} ${months[mi]} ${yyyy}`;
+  return `${parseInt(d,10)} ${months[mi]}`;
 }
 
 function maskPhone(p){
   if(!p) return "";
-  const digits = p.replace(/[^0-9]/g,'');
-  if(digits.length < 6) return p;
   const clean = p.trim();
-  // keep first 3 and last 4 characters of the raw string, mask middle
   if(clean.length <= 8) return clean;
   return clean.slice(0,3) + "-•••-" + clean.slice(-4);
 }
-
 function maskAddress(a){
   if(!a) return "";
-  if(a.length <= 26) return a;
-  return a.slice(0,8) + " •••• " + a.slice(-22);
+  if(a.length <= 24) return a;
+  return a.slice(0,6) + " •••• " + a.slice(-18);
 }
-
 function money(n){
   if(n === null || n === undefined || n === "") return null;
   return Number(n).toLocaleString('en-US');
 }
-
 function carrierClass(c){
   if(!c) return "other";
   const u = c.toUpperCase();
   if(u === "J&T") return "jt";
   if(u === "FLASH") return "flash";
   return "other";
+}
+function escapeHtml(s){
+  if(s === null || s === undefined) return "";
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
 /* ---------- render: static UI text ---------- */
@@ -442,27 +457,20 @@ function applyUIText(){
   });
 }
 
-/* ---------- render: day tabs ---------- */
 function renderDayTabs(){
   const box = document.getElementById('day-tabs');
   box.innerHTML = "";
   RAW.forEach(day=>{
     const btn = document.createElement('button');
-    btn.textContent = fmtDate(day.date);
-    const n = document.createElement('span');
-    n.className = 'n';
-    n.textContent = `(${day.orders.length})`;
-    btn.appendChild(n);
+    btn.innerHTML = `${fmtDate(day.date)} <span class="n">${day.orders.length}</span>`;
     if(day.date === activeDay) btn.classList.add('active');
     btn.addEventListener('click', ()=>{ activeDay = day.date; renderAll(); });
     box.appendChild(btn);
   });
 }
 
-/* ---------- render: carrier filter ---------- */
 function renderCarrierFilter(){
   const box = document.getElementById('carrier-filter');
-  const day = RAW.find(d=>d.date===activeDay);
   const carriers = ["ALL","J&T","FLASH"];
   box.innerHTML = "";
   carriers.forEach(c=>{
@@ -474,7 +482,6 @@ function renderCarrierFilter(){
   });
 }
 
-/* ---------- render: status filter dropdown ---------- */
 function renderStatusFilter(){
   const sel = document.getElementById('status-filter');
   const current = activeStatus;
@@ -493,7 +500,6 @@ function renderStatusFilter(){
   sel.onchange = ()=>{ activeStatus = sel.value; renderAll(); };
 }
 
-/* ---------- render: stats ---------- */
 function renderStats(){
   const box = document.getElementById('stats');
   const day = RAW.find(d=>d.date===activeDay);
@@ -507,7 +513,7 @@ function renderStats(){
     [total, UI[lang].orders_count],
     [jt, "J&T"],
     [flash, "FLASH"],
-    [delivered, lang==='th' ? 'สำเร็จ' : (lang==='en' ? 'Delivered' : 'ပို့ဆောင်ပြီး')]
+    [delivered, UI[lang].delivered_word]
   ];
   items.forEach(([n,label])=>{
     const d = document.createElement('div');
@@ -517,13 +523,12 @@ function renderStats(){
   });
 }
 
-/* ---------- render: orders ---------- */
 function renderOrders(){
   const box = document.getElementById('orders');
   const empty = document.getElementById('empty');
   box.innerHTML = "";
   const day = RAW.find(d=>d.date===activeDay);
-  if(!day){ box.innerHTML=""; empty.style.display='block'; return; }
+  if(!day){ empty.style.display='block'; return; }
 
   let list = day.orders.filter(o=>{
     if(activeCarrier !== "ALL" && o.carrier !== activeCarrier) return false;
@@ -536,69 +541,53 @@ function renderOrders(){
     return true;
   });
 
-  if(list.length === 0){
-    empty.style.display = 'block';
-    return;
-  }
+  if(list.length === 0){ empty.style.display = 'block'; return; }
   empty.style.display = 'none';
 
   list.forEach(o=>{
-    const st = STATUS_I18N[o.status] || { en:o.status, my:o.status, color:"gray" };
+    const st = STATUS_I18N[o.status] || { en:o.status, my:o.status, color:"gray", icon:"package" };
     const statusLabel = lang === 'th' ? o.status : st[lang];
-    const colorVarMap = {
-      amber:['var(--amber)','var(--amber-bg)'],
-      blue:['var(--blue)','var(--blue-bg)'],
-      teal:['var(--teal)','var(--teal-bg)'],
-      green:['var(--green)','var(--green-bg)'],
-      red:['var(--red)','var(--red-bg)'],
-      gray:['var(--gray)','var(--gray-bg)']
-    };
-    const [fg,bg] = colorVarMap[st.color] || colorVarMap.gray;
+    const [fg, aBg, bBg] = COLOR_VARS[st.color] || COLOR_VARS.gray;
 
     const card = document.createElement('div');
-    card.className = 'order';
-    card.style.setProperty('--o-color', fg);
+    card.className = 'order-card';
+    card.style.setProperty('--t-fg', fg);
+    card.style.setProperty('--t-a', aBg);
+    card.style.setProperty('--t-b', bBg);
 
     const otype = ORDERTYPE_I18N[o.order_type];
     const otypeLabel = otype ? (lang==='th'? otype.th : otype[lang]) : (o.order_type||"");
-
     const phoneShown = showFull ? o.phone : maskPhone(o.phone);
     const addrShown = showFull ? o.address : maskAddress(o.address);
 
     let amountHtml = "";
-    if(o.cod_amount){
-      amountHtml = `<div class="o-amount">${UI[lang].cod}: <b>${money(o.cod_amount)} ฿</b></div>`;
-    } else if(o.paid_amount){
-      amountHtml = `<div class="o-amount">${UI[lang].paid}: <b>${money(o.paid_amount)} ฿</b></div>`;
-    }
+    if(o.cod_amount){ amountHtml = `<span class="amount">${UI[lang].cod} ${money(o.cod_amount)}฿</span>`; }
+    else if(o.paid_amount){ amountHtml = `<span class="amount">${UI[lang].paid} ${money(o.paid_amount)}฿</span>`; }
 
     card.innerHTML = `
-      <div class="o-id">${o.id}</div>
-      <div class="o-carrier ${carrierClass(o.carrier)}">${o.carrier || "-"}</div>
-      <div class="o-main">
-        <p class="o-name">${escapeHtml(o.customer)}</p>
-        <div class="o-sub">
-          <span>${escapeHtml(phoneShown)}</span>
-          <span class="o-track">${UI[lang].tracking}: ${escapeHtml(o.tracking || "-")}</span>
-          <span>${escapeHtml(otypeLabel)}</span>
+      <div class="card-head">
+        <div class="icon-tiles">
+          <div class="icon-tile" title="${escapeHtml(o.carrier||'')}">${ICONS.truck}</div>
+          <div class="icon-tile">${ICONS[st.icon] || ICONS.package}</div>
         </div>
-        <div class="o-addr">${escapeHtml(addrShown)}</div>
+        <div class="order-id">${escapeHtml(o.id)}</div>
       </div>
-      <div class="o-status">
-        <span class="status-pill" style="color:${fg};background:${bg}">${escapeHtml(statusLabel)}</span>
+      <p class="card-name">${escapeHtml(o.customer)}</p>
+      <div class="card-meta">
+        <span>${escapeHtml(phoneShown)}</span>
+        <span class="track">${UI[lang].tracking}: ${escapeHtml(o.tracking || "-")}</span>
+        <span class="addr">${escapeHtml(addrShown)}</span>
+      </div>
+      <div class="card-foot">
+        <span class="mini-tag">${escapeHtml(otypeLabel)}</span>
         ${amountHtml}
+        <span class="status-pill"><span class="dot"></span>${escapeHtml(statusLabel)}</span>
       </div>
     `;
     box.appendChild(card);
   });
 }
 
-function escapeHtml(s){
-  if(s === null || s === undefined) return "";
-  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-}
-
-/* ---------- master render ---------- */
 function renderAll(){
   applyUIText();
   renderDayTabs();
@@ -615,12 +604,10 @@ document.getElementById('lang-switch').addEventListener('click', (e)=>{
   lang = btn.dataset.lang;
   renderAll();
 });
-
 document.getElementById('search').addEventListener('input', (e)=>{
   searchTerm = e.target.value.trim();
   renderOrders();
 });
-
 document.getElementById('privacy-toggle').addEventListener('change', (e)=>{
   showFull = e.target.checked;
   renderOrders();
@@ -676,7 +663,6 @@ function parseWorkbook(wb){
         const u = carrier.trim().toUpperCase();
         carrier = (u === 'J&T' || u === 'FLASH') ? u : (carrier.trim() || null);
       }
-
       const numOrNull = (idx) => {
         if(idx < 0) return null;
         const v = row[idx];
@@ -772,7 +758,6 @@ document.getElementById('download-site-btn').addEventListener('click', ()=>{
   URL.revokeObjectURL(url);
 });
 
-/* ---------- restore from localStorage if present ---------- */
 (function restoreLocal(){
   try{
     const saved = localStorage.getItem('orderTrackerData');
